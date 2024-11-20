@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Recognition Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(120deg, #89f7fe, #66a6ff);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: slideIn 1s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        h1 {
+            margin: 0;
+            padding: 20px;
+            background: #66a6ff;
+            color: white;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        p {
+            margin: 10px;
+            font-size: 1em;
+            text-align: center;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; /* Space between buttons */
+            margin: 20px 0;
+        }
+        input[type="file"] {
+            display: none;
+        }
+
+        #imageInput {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        label {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #66a6ff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        label:hover {
+            background: #89f7fe;
+        }
+        button {
+            padding: 10px 20px;
+            background: #66a6ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #89f7fe;
+        }
+        #chatOutput {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        .chat-message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            animation: fadeIn 0.5s ease;
+        }
+        .chat-message:nth-child(odd) {
+            background: #e0f7fa;
+        }
+        .chat-message:nth-child(even) {
+            background: #fce4ec;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design for Mobile */
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column; /* Stack items vertically */
+                gap: 10px; /* Reduce gap between buttons */
+            }
+            label, button {
+                width: 80%; /* Make buttons take up most of the width */
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>Image Recognition Chatbot</h1>
+        <p>Upload an image to identify its contents!</p>
+        <div class="controls">
+            <label for="imageInput">Choose Image</label>
+            <input type="file" id="imageInput" accept="image/*" />
+            <button id="uploadButton">Upload and Analyze</button>
+        </div>
+        <div id="chatOutput"></div>
+    </div>
+
+    <script>
+        const uploadButton = document.getElementById("uploadButton");
+        const imageInput = document.getElementById("imageInput");
+        const chatOutput = document.getElementById("chatOutput");
+
+        uploadButton.addEventListener("click", async () => {
+            if (!imageInput.files[0]) {
+                alert("Please select an image!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("image", imageInput.files[0]);
+
+            // Display loading message
+            displayMessage("Chatbot: Analyzing image...");
+
+            // Simulate backend response
+            setTimeout(() => {
+                displayMessage("Chatbot: Here is the analysis result!");
+            }, 2000);
+
+            // Send the image to the backend (commented for this example)
+            /*
+            try {
+                const response = await fetch("/analyze", {
+                    method: "POST",
+                    body: formData,
+                });
+                const result = await response.json();
+                displayMessage(`Chatbot: ${result.message}`);
+            } catch (error) {
+                displayMessage("Chatbot: There was an error analyzing the image.");
+            }
+            */
+        });
+
+        function displayMessage(message) {
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "chat-message";
+            messageDiv.textContent = message;
+            chatOutput.appendChild(messageDiv);
+            chatOutput.scrollTop = chatOutput.scrollHeight; // Scroll to the latest message
+        }
+    </script>
+</body>
+</html>
